@@ -1,8 +1,8 @@
 export enum AppRoutes {
     MAIN = "main",
-    PROFILE = 'profile',
+    PROFILE = "profile",
     LOGIN = "login",
-    REGISTRATION = 'registration',
+    REGISTRATION = "registration",
     // last
     NOT_FOUND = "not_found"
 }

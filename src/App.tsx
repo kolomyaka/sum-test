@@ -1,3 +1,9 @@
+import { AppRouter } from "@/services/providers";
+import { MainLayout } from "@/components/Layout/MainLayout";
+
 export const App = () => {
-    return <h1>Hello world!</h1>;
+
+    return (
+        <MainLayout content={<AppRouter />} />
+    );
 };
