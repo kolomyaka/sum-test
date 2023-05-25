@@ -1,6 +1,6 @@
 import { ReactElement, useState } from "react";
 import { Layout } from "antd";
-import { Sidebar } from "@/components/Sidebar/Sidebar";
+import { Sidebar } from "@/components";
 
 const { Content } = Layout;
 

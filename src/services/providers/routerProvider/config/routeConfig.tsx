@@ -1,23 +1,24 @@
 import { AppRoutes, RoutePath } from "@/utils/consts/router";
 import { AppRoutesProps } from "@/types/router";
+import { LoginPage, MainPage, ProfilePage, SignUpPage } from "@/pages";
 
 export const routeConfig: Record<AppRoutes, AppRoutesProps> = {
     [AppRoutes.MAIN]: {
         path: RoutePath.main,
-        element: <div>Main page</div>,
+        element: <MainPage />,
     },
     [AppRoutes.PROFILE]: {
         path: RoutePath.profile,
-        element: <div>Profile page</div>,
+        element: <ProfilePage />,
         authOnly: true
     },
     [AppRoutes.REGISTRATION]: {
         path: RoutePath.registration,
-        element: <div>Registration page</div>
+        element: <SignUpPage />
     },
     [AppRoutes.LOGIN]: {
         path: RoutePath.login,
-        element: <div>Login page</div>,
+        element: <LoginPage />,
     },
     // last
     [AppRoutes.NOT_FOUND]: {
