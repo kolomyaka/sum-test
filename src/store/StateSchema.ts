@@ -1,7 +1,8 @@
 import { AxiosInstance } from "axios";
+import { UserSchema } from "@/store/user/UserSchema";
 
 export interface StateSchema {
-
+    user: UserSchema
 }
 
 // Типизируем поле extra у ThunkAPI

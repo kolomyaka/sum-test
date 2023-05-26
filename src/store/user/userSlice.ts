@@ -1,9 +1,10 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { UserSchema } from "@/store/user/UserSchema";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { User, UserSchema } from "@/store/user/UserSchema";
+import { loginByUsername } from "@/services/api/LoginByUsername";
 
 
 const initialState: UserSchema = {
-    error: undefined,
+    isLoading: false
 };
 
 export const userSlice = createSlice({
@@ -11,7 +12,21 @@ export const userSlice = createSlice({
     initialState,
     reducers: {
     },
-
+    extraReducers: (builder) => {
+        builder
+            .addCase(loginByUsername.pending, (state) => {
+                state.isLoading = true;
+                state.error = undefined;
+            })
+            .addCase(loginByUsername.fulfilled, (state, action: PayloadAction<User>) => {
+                state.isLoading = false;
+                state.authData = action.payload;
+            })
+            .addCase(loginByUsername.rejected, (state, action: PayloadAction<string | undefined>) => {
+                state.isLoading = false;
+                state.error = action.payload;
+            });
+    },
 });
 
 

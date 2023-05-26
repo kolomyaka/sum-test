@@ -13,7 +13,7 @@ export default (env: BuildEnv) => {
 
     const mode = env.mode || "development";
     const isDev = mode === "development";
-    const apiUrl = env.apiUrl || "http://127.0.0.1:8000/api/";
+    const apiUrl = env.apiUrl || "https://647122b53de51400f7255891.mockapi.io/";
 
     const PORT = env.port || 3000;
 

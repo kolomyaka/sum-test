@@ -1,8 +1,10 @@
-interface User {
-    username: "string"
+export interface User {
+    username: string;
+    name: string;
 }
 
 export interface UserSchema {
     authData?: User
-    error?: string
+    error?: string | undefined;
+    isLoading: boolean;
 }
