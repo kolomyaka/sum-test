@@ -1,8 +1,12 @@
 import { AxiosInstance } from "axios";
 import { UserSchema } from "@/store/user/UserSchema";
+import { LoginFormSchema } from "@/store/LoginForm/LoginFormSchema";
+import { SignUpFormSchema } from "@/store/SignUpForm";
 
 export interface StateSchema {
-    user: UserSchema
+    user: UserSchema;
+    loginForm: LoginFormSchema;
+    signUpForm: SignUpFormSchema;
 }
 
 // Типизируем поле extra у ThunkAPI

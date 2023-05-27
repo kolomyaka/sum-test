@@ -4,7 +4,14 @@ import { useAppDispatch } from "@/utils/hooks/useAppDispatch/useAppDispatch";
 import { loginByUsername } from "@/services/api/LoginByUsername";
 import { useCallback, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { getUserError } from "@/store/user/userSelector";
+import {
+    getLoginFormError,
+    getLoginFormIsLoading,
+    getLoginFormPassword,
+    getLoginFormUsername,
+    loginFormActions,
+    LoginFormFields
+} from "@/store/LoginForm";
 
 const { Title } = Typography;
 
@@ -16,8 +23,11 @@ interface formValuesProps {
 export const LoginForm = () => {
     const dispatch = useAppDispatch();
     const [messageApi, contextHolder] = message.useMessage();
+    const username = useSelector(getLoginFormUsername);
+    const password = useSelector(getLoginFormPassword);
 
-    const error = useSelector(getUserError);
+    const error = useSelector(getLoginFormError);
+    const isLoading = useSelector(getLoginFormIsLoading);
 
     const errorMessage = useCallback((errorText: string) => {
         messageApi.open({
@@ -40,33 +50,58 @@ export const LoginForm = () => {
         }
     }, [error, errorMessage]);
 
+    const onChangeHandler = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+        const field = e.target.name as LoginFormFields;
+        const value = e.target.value;
+        dispatch(loginFormActions.setLoginFormField({ field, value }));
+    }, [dispatch]);
 
     return (
         <div className={cls.loginForm}>
             {contextHolder}
-            <Title>Вход</Title>
+            <Title style={{ textAlign: "center" }}>Вход</Title>
             <Form
-                name="login"
+                name="registration"
                 autoComplete="off"
                 layout="vertical"
                 onFinish={onFinishHandler}
+                initialValues={{
+                    username,
+                    password
+                }}
             >
                 <Form.Item
                     label={"Логин"}
                     name="username"
                     rules={[{ required: true, message: "Введите Ваш логин!" }]}
                 >
-                    <Input type={"text"} placeholder={"Введите логин"} />
+                    <Input
+                        name={"username"}
+                        value={username}
+                        type={"text"}
+                        placeholder={"Введите логин"}
+                        onChange={onChangeHandler}
+                    />
                 </Form.Item>
                 <Form.Item
                     label={"Пароль"}
                     name="password"
                     rules={[{ required: true, message: "Введите Ваш пароль!" }]}
                 >
-                    <Input.Password placeholder={"Введите пароль"} />
+                    <Input.Password
+                        name={"password"}
+                        value={password}
+                        placeholder={"Введите пароль"}
+                        onChange={onChangeHandler}
+                    />
                 </Form.Item>
                 <Form.Item>
-                    <Button type="primary" htmlType="submit" className={cls.loginFormButton}>
+                    <Button
+                        loading={isLoading}
+                        block type="primary"
+                        htmlType="submit"
+                        className={cls.loginFormButton}
+                    >
                         Войти
                     </Button>
                 </Form.Item>

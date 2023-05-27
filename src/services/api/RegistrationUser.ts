@@ -4,37 +4,40 @@ import { getUserAuthData } from "@/utils/helpers/getUserAuthData";
 import { responseUser } from "@/types/response";
 import { userActions } from "@/store/user";
 
-interface loginByUsernameProps {
+interface RegistrationUserProps {
     username: string;
+    name: string;
     password: string;
+    repeatPassword: string;
 }
 
-export const loginByUsername = createAsyncThunk<
+export const RegistrationUser = createAsyncThunk<
     void,
-    loginByUsernameProps,
+    RegistrationUserProps,
     ThunkConfig<string>
     >(
-        "loginForm/loginByUsername",
-        async ({ username, password }, thunkAPI) => {
+        "signUpForm/RegistrationUser",
+        async ({ username, password, repeatPassword, name }, thunkAPI) => {
             const { extra, rejectWithValue, dispatch } = thunkAPI;
 
             try {
+                if (password !== repeatPassword) {
+                    throw new Error("Введенные пароли не совпадают");
+                }
+
                 const response = await extra.api.get<responseUser[]>("/users");
 
                 if (!response.data) {
                     throw new Error("Произошла ошибка, перезагрузите страницу");
                 }
 
-                const authorizedUser = response.data.find((item) => getUserAuthData(item, username, password));
+                const existingUser = response.data.find((item) => getUserAuthData(item, username, password));
 
-                if (!authorizedUser) {
-                    throw new Error("Имя пользователя или пароль введены не верно");
+                if (existingUser) {
+                    throw new Error("Пользователь с таким логином уже зарегистрирован");
                 }
 
-                dispatch(userActions.setAuthData({
-                    username: authorizedUser.username,
-                    name: authorizedUser.name
-                }));
+                dispatch(userActions.setAuthData({ username, name }));
             } catch (e) {
                 return rejectWithValue(e.message);
             }

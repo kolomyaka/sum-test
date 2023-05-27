@@ -10,7 +10,8 @@ import {
 import "./sidebar.scss";
 import { HStack } from "@/components/ui";
 import { RoutePath } from "@/utils/consts/router";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import { useEffect, useState } from "react";
 
 const { Sider } = Layout;
 
@@ -31,10 +32,11 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-    getItem(<Link to={RoutePath.main}>Главная</Link>, "1", <AppstoreOutlined />),
-    getItem(<Link to={RoutePath.profile}>Профиль</Link>, "2", <UserOutlined />),
-    getItem(<Link to={RoutePath.login}>Вход</Link>, "3", <LoginOutlined />),
-    getItem(<Link to={RoutePath.registration}>Регистрация</Link>, "4", <UserAddOutlined />),
+    getItem(<Link to={RoutePath.main}>Главная</Link>, RoutePath.main, <AppstoreOutlined />, RoutePath.main),
+    getItem(<Link to={RoutePath.profile}>Профиль</Link>, RoutePath.profile, <UserOutlined />, RoutePath.profile),
+    getItem(<Link to={RoutePath.login}>Вход</Link>, RoutePath.login, <LoginOutlined />, RoutePath.login),
+    getItem(<Link to={RoutePath.registration}>Регистрация</Link>, RoutePath.registration, <UserAddOutlined />,
+        RoutePath.registration),
 ];
 
 interface sidebarProps {
@@ -44,6 +46,13 @@ interface sidebarProps {
 
 export const Sidebar = (props: sidebarProps) => {
     const { collapsed, setCollapsed } = props;
+    const location = useLocation();
+
+    const [currentLocation, setCurrentLocation] = useState(location.pathname);
+
+    useEffect(() => {
+        setCurrentLocation(location.pathname);
+    }, [location.pathname]);
 
     return (
         <Sider
@@ -73,8 +82,9 @@ export const Sidebar = (props: sidebarProps) => {
                 />
             </HStack>
             <Menu
+                // TODO: Подсвечивание menuItem зависит не от урла, а от нажатия на меню
+                defaultSelectedKeys={[currentLocation]}
                 theme="light"
-                defaultSelectedKeys={["1"]}
                 mode="inline"
                 items={items}
             />

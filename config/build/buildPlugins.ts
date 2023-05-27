@@ -25,6 +25,9 @@ export function buildPlugins({ paths, isDev, apiUrl }: BuildOptions): webpack.We
     if (isDev) {
         plugins.push(new ReactRefreshWebpackPlugin());
         plugins.push(new ForkTsCheckerWebpackPlugin({
+            issue: {
+                exclude: [{ file: "node_modules/**/*.tsx" }, { file: "node_modules/**/*.ts" }],
+            },
             typescript: {
                 diagnosticOptions: {
                     semantic: true,
